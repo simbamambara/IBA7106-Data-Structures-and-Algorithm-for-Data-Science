@@ -372,10 +372,6 @@ int main() {
 
 i. postfix expression [3] 
 
-
-Here's a C program that converts the infix expression "(a+b)*(c+d)/f" to a postfix expression:
-
-```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
