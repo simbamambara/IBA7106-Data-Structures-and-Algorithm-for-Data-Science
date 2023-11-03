@@ -1,1 +1,578 @@
+Assignment 1
+
+a)	Write an algorithm that deletes an element from the head of a queue and assigns it to variable called ITEM. [5]
+
+	Define size of queue
+	Check if queue is empty.
+	If the queue is not empty, access the data where the front is pointing.
+	Dequeue an element from the head of the queue and assign it to ITEM
+	Return success
+
+void dequeue(int *ITEM) {
+    if (isEmpty()) {
+        printf("Queue is empty. Cannot dequeue.\n");
+        return;
+    }
+    *ITEM = queue[front];
+    if (front == rear) {
+        front = rear = -1;  // Queue becomes empty
+    } else {
+        front = (front + 1) % MAX_SIZE;
+
+return 0;
+    }
+
+b)	Write a C program that prompts the user to enter 10 number and the perform linear search on data elements for a given search key K. [10]
+#include <stdio.h>
+int main() {
+    int data[10];
+    int i, K, found = 0;
+
+    printf("Enter 10 numbers, one at a time:\n");
+    for (i = 0; i < 10; i++) {
+        scanf("%d", &data[i]);
+    }
+
+    printf("Enter the search key (K): ");
+    scanf("%d", &K);
+
+    for (i = 0; i < 10; i++) {
+        if (data[i] == K) {
+            printf("Element %d found at index %d.\n", K, i);
+            found = 1;
+            break; 
+        }
+    }
+
+    if (!found) {
+        printf("Element %d not found in the array.\n", K);
+    }
+
+    return 0;
+}
+
+
+c)	Write a C program to sort the following integers using bubble sort. [5].
+2, 1, 4, 5, 9, 3, 6, 7
+
+#include <stdio.h>
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap arr[j] and arr[j + 1]
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+int main() {
+    int arr[] = {2, 1, 4, 5, 9, 3, 6, 7};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    printf("Original array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    bubbleSort(arr, n);
+
+    printf("Sorted array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+d)	Demonstrate how bubble sort performs sorting on the numbers above: [10]
+
+The Original array is Original Array: 2, 1, 4, 5, 9, 3, 6, 7
+
+1. 
+	Analyse 2 and 1 (2 > 1), swap.
+	Analyse 2 and 4 (2 < 4), no swap.
+	Analyse 4 and 5 (4 < 5), no swap.
+	Analyse 5 and 9 (5 < 9), no swap.
+	Analyse 9 and 3 (9 > 3), swap.
+	Analyse 9 and 6 (9 > 6), swap.
+	Analyse 9 and 7 (9 > 7), swap.
+
+   Array after 1: 1, 2, 4, 5, 3, 6, 7, 9
+
+2. 
+	Analyse 1 and 2 (1 < 2), no swap.
+	Analyse 2 and 4 (2 < 4), no swap.
+	Analyse 4 and 5 (4 < 5), no swap.
+	Analyse 5 and 3 (5 > 3), swap.
+	Analyse 5 and 6 (5 < 6), no swap.
+	Analyse 6 and 7 (6 < 7), no swap.
+
+   Array after 2: 1, 2, 4, 3, 5, 6, 7, 9
+
+3. 
+	Analyse 1 and 2 (1 < 2), no swap.
+	Analyse 2 and 4 (2 < 4), no swap.
+	Analyse 4 and 3 (4 > 3), swap.
+	Analyse 4 and 5 (4 < 5), no swap.
+	Analyse 5 and 6 (5 < 6), no swap.
+
+   Array after 3: 1, 2, 3, 4, 5, 6, 7, 9
+
+4. 
+	Analyse 1 and 2 (1 < 2), no swap.
+	Analyse 2 and 3 (2 < 3), no swap.
+	Analyse 3 and 4 (3 < 4), no swap.
+
+   Array after 4: 1, 2, 3, 4, 5, 6, 7, 9
+
+ The sorted array is: 1, 2, 3, 4, 5, 6, 7, 9.
+
+Assignment 2
+
+ASSIGNMENT 2
+1. Suppose a linear linked list named LIST. Write an algorithm which deletes the last
+node from the LIST. [10]
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a structure for a node in the linked list
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to delete the last node from the linked list
+void deleteLastNode(struct Node** head) {
+    // Check if the list is empty
+    if (*head == NULL) {
+        printf("The list is empty, nothing to delete.\n");
+        return;
+    }
+
+    // If the list has only one node, delete it
+    if ((*head)->next == NULL) {
+        free(*head);
+        *head = NULL;
+        return;
+    }
+
+    // Traverse the list to find the second-to-last node
+    struct Node* current = *head;
+    while (current->next->next != NULL) {
+        current = current->next;
+    }
+
+    // Delete the last node
+    free(current->next);
+    current->next = NULL;
+}
+
+int main() {
+    // Create a sample linked list
+    struct Node* head = NULL;
+    struct Node* second = NULL;
+    struct Node* third = NULL;
+
+    head = (struct Node*)malloc(sizeof(struct Node));
+    second = (struct Node*)malloc(sizeof(struct Node));
+    third = (struct Node*)malloc(sizeof(struct Node));
+
+    head->data = 1;
+    head->next = second;
+    second->data = 2;
+    second->next = third;
+    third->data = 3;
+    third->next = NULL;
+
+    // Print the original list
+    printf("Original List: ");
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+
+    // Delete the last node
+    deleteLastNode(&head);
+
+    // Print the modified list
+    printf("List after deleting the last node: ");
+    current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+
+    return 0;
+}
+
+2. Suppose the following list of letters is inserted in order into an empty binary search
+tree: J, R, D, G, T, E, M, H, P, A, F, Q
+
+Find the final Tree T. [6]
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a structure for a binary tree node
+struct Node {
+    char data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(char data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to insert a letter into the binary search tree
+struct Node* insert(struct Node* root, char data) {
+    if (root == NULL) {
+        return createNode(data);
+    }
+
+    if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else if (data > root->data) {
+        root->right = insert(root->right, data);
+    }
+
+    return root;
+}
+
+// Function to perform an in-order traversal of the binary search tree
+void inOrderTraversal(struct Node* root) {
+    if (root != NULL) {
+        inOrderTraversal(root->left);
+        printf("%c ", root->data);
+        inOrderTraversal(root->right);
+    }
+}
+
+int main() {
+    struct Node* root = NULL;
+    
+    // List of letters to insert into the binary search tree
+    char letters[] = {'J', 'R', 'D', 'G', 'T', 'E', 'M', 'H', 'P', 'A', 'F', 'Q'};
+    int i;
+    
+    for (i = 0; i < sizeof(letters) / sizeof(letters[0]); i++) {
+        root = insert(root, letters[i]);
+    }
+    
+    printf("In-order traversal of the final tree T: ");
+    inOrderTraversal(root);
+    printf("\n");
+    
+    return 0;
+}
+
+i.	Find the preorder, inorder and post order traversal of T. [9]
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define a structure for a binary tree node
+struct Node {
+    char data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(char data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to insert a letter into the binary search tree
+struct Node* insert(struct Node* root, char data) {
+    if (root == NULL) {
+        return createNode(data);
+    }
+
+    if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else if (data > root->data) {
+        root->right = insert(root->right, data);
+    }
+
+    return root;
+}
+
+// Preorder traversal of the binary search tree
+void preorderTraversal(struct Node* root) {
+    if (root != NULL) {
+        printf("%c ", root->data);
+        preorderTraversal(root->left);
+        preorderTraversal(root->right);
+    }
+}
+
+// Inorder traversal of the binary search tree
+void inorderTraversal(struct Node* root) {
+    if (root != NULL) {
+        inorderTraversal(root->left);
+        printf("%c ", root->data);
+        inorderTraversal(root->right);
+    }
+}
+
+// Postorder traversal of the binary search tree
+void postorderTraversal(struct Node* root) {
+    if (root != NULL) {
+        postorderTraversal(root->left);
+        postorderTraversal(root->right);
+        printf("%c ", root->data);
+    }
+}
+
+int main() {
+    struct Node* root = NULL;
+    
+    // List of letters to insert into the binary search tree
+    char letters[] = {'J', 'R', 'D', 'G', 'T', 'E', 'M', 'H', 'P', 'A', 'F', 'Q'};
+    int i;
+    
+    for (i = 0; i < sizeof(letters) / sizeof(letters[0]); i++) {
+        root = insert(root, letters[i]);
+    }
+    
+    printf("Preorder traversal of the tree T: ");
+    preorderTraversal(root);
+    printf("\n");
+
+    printf("Inorder traversal of the tree T: ");
+    inorderTraversal(root);
+    printf("\n");
+
+    printf("Postorder traversal of the tree T: ");
+    postorderTraversal(root);
+    printf("\n");
+    
+    return 0;
+}
+
+3. Convert the infix (a+b)*(c+d)/f into the following expressions:
+
+i. postfix expression [3] 
+
+
+Here's a C program that converts the infix expression "(a+b)*(c+d)/f" to a postfix expression:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define a structure for a stack
+struct Stack {
+    int top;
+    unsigned capacity;
+    char* array;
+};
+
+// Function to create a stack
+struct Stack* createStack(unsigned capacity) {
+    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
+    stack->capacity = capacity;
+    stack->top = -1;
+    stack->array = (char*)malloc(stack->capacity * sizeof(char));
+    return stack;
+}
+
+// Function to check if the stack is empty
+int isEmpty(struct Stack* stack) {
+    return stack->top == -1;
+}
+
+// Function to push a character onto the stack
+void push(struct Stack* stack, char item) {
+    stack->array[++stack->top] = item;
+}
+
+// Function to pop a character from the stack
+char pop(struct Stack* stack) {
+    if (!isEmpty(stack)) {
+        return stack->array[stack->top--];
+    }
+    return '\0';
+}
+
+// Function to get the top character of the stack without popping it
+char peek(struct Stack* stack) {
+    return stack->array[stack->top];
+}
+
+// Function to determine the precedence of operators
+int precedence(char operator) {
+    if (operator == '+' || operator == '-')
+        return 1;
+    if (operator == '*' || operator == '/')
+        return 2;
+    return 0;
+}
+
+// Function to convert an infix expression to a postfix expression
+void infixToPostfix(char* infix) {
+    struct Stack* stack = createStack(strlen(infix));
+    char postfix[strlen(infix) + 1];
+    int i, j;
+    
+    for (i = 0, j = 0; infix[i]; i++) {
+        char token = infix[i];
+        if (isalnum(token)) {
+            postfix[j++] = token;
+        } else if (token == '(') {
+            push(stack, token);
+        } else if (token == ')') {
+            while (!isEmpty(stack) && peek(stack) != '(') {
+                postfix[j++] = pop(stack);
+            }
+            if (!isEmpty(stack) && peek(stack) != '(') {
+                printf("Invalid expression\n");
+                return;
+            } else {
+                pop(stack); // Pop and discard '('
+            }
+        } else {
+            while (!isEmpty(stack) && precedence(token) <= precedence(peek(stack))) {
+                postfix[j++] = pop(stack);
+            }
+            push(stack, token);
+        }
+    }
+    
+    while (!isEmpty(stack)) {
+        postfix[j++] = pop(stack);
+    }
+    
+    postfix[j] = '\0';
+    printf("Postfix expression: %s\n", postfix);
+}
+
+int main() {
+    char infix[] = "(a+b)*(c+d)/f";
+    infixToPostfix(infix);
+    return 0;
+}
+
+ii. prefix expression [2]
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define a structure for a stack
+struct Stack {
+    int top;
+    unsigned capacity;
+    char* array;
+};
+
+// Function to create a stack
+struct Stack* createStack(unsigned capacity) {
+    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
+    stack->capacity = capacity;
+    stack->top = -1;
+    stack->array = (char*)malloc(stack->capacity * sizeof(char));
+    return stack;
+}
+
+// Function to check if the stack is empty
+int isEmpty(struct Stack* stack) {
+    return stack->top == -1;
+}
+
+// Function to push a character onto the stack
+void push(struct Stack* stack, char item) {
+    stack->array[++stack->top] = item;
+}
+
+// Function to pop a character from the stack
+char pop(struct Stack* stack) {
+    if (!isEmpty(stack)) {
+        return stack->array[stack->top--];
+    }
+    return '\0';
+}
+
+// Function to get the top character of the stack without popping it
+char peek(struct Stack* stack) {
+    return stack->array[stack->top];
+}
+
+// Function to determine the precedence of operators
+int precedence(char operator) {
+    if (operator == '+' || operator == '-')
+        return 1;
+    if (operator == '*' || operator == '/')
+        return 2;
+    return 0;
+}
+
+// Function to convert an infix expression to a prefix expression
+void infixToPrefix(char* infix) {
+    struct Stack* stack = createStack(strlen(infix));
+    char prefix[strlen(infix) + 1];
+    int i, j;
+
+    for (i = strlen(infix) - 1, j = 0; i >= 0; i--) {
+        char token = infix[i];
+
+        if (isalnum(token)) {
+            prefix[j++] = token;
+        } else if (token == ')') {
+            push(stack, token);
+        } else if (token == '(') {
+            while (!isEmpty(stack) && peek(stack) != ')') {
+                prefix[j++] = pop(stack);
+            }
+            if (!isEmpty(stack) && peek(stack) != ')') {
+                printf("Invalid expression\n");
+                return;
+            } else {
+                pop(stack); // Pop and discard ')'
+            }
+        } else {
+            while (!isEmpty(stack) && precedence(token) < precedence(peek(stack))) {
+                prefix[j++] = pop(stack);
+            }
+            push(stack, token);
+        }
+    }
+
+    while (!isEmpty(stack)) {
+        prefix[j++] = pop(stack);
+    }
+
+    prefix[j] = '\0';
+
+    // Reverse the prefix expression to get the correct order
+    strrev(prefix);
+
+    printf("Prefix expression: %s\n", prefix);
+}
+
+int main() {
+    char infix[] = "(a+b)*(c+d)/f";
+    infixToPrefix(infix);
+    return 0;
+}
+
 
